@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Create = () => {
   const [form, setForm] = useState({});
@@ -18,6 +19,7 @@ const Create = () => {
     form.dueDate = dueDateTimestamp;
     try {
       await axios.post("http://localhost:3001/add", form);
+      // toast.success("Task Added."); // Show a success toast message
       window.location.reload();
     } catch (error) {
       console.log(error);

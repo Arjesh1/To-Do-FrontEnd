@@ -9,6 +9,7 @@ const TasksList = () => {
   const [tasks, setTask] = useState([]);
   const [selectedTask, setSelectedTask] = useState({});
   const dispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState(false);
   useEffect(() => {
     try {
       axios
@@ -34,6 +35,12 @@ const TasksList = () => {
     }
   };
 
+  const handleOnChangeCheck = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
+  console.log(isChecked);
+
   return (
     <>
       <Modal selectedTask={selectedTask} />
@@ -48,7 +55,7 @@ const TasksList = () => {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((item, i) => (
+            {tasks?.map((item, i) => (
               <tr className="border-b" key={item._id}>
                 <td className="py-3">{i + 1}</td>
                 <td className="py-3">{item.task}</td>
@@ -57,6 +64,12 @@ const TasksList = () => {
                 </td>
                 <td className="py-3">
                   <div className="flex justify-center gap-4">
+                    <input
+                      type="checkbox"
+                      className="rounded-full"
+                      checked={isChecked}
+                      onChange={handleOnChangeCheck}
+                    />
                     <button
                       className="text-blue-300 text-2xl"
                       onClick={() => {
