@@ -12,9 +12,9 @@ const TasksList = () => {
   
   useEffect(() => {
     try {
-      axios
+       axios
         .get("http://localhost:3001/get")
-        .then((result) => setTask(result.data));
+        .then((result) => setTask(result?.data));
     } catch (error) {
       console.log(error);
     }
@@ -35,13 +35,14 @@ const TasksList = () => {
     }
   };
 
-  const handleOnChangeCheck = (id, value) => {
+  const handleOnChangeCheck = (id, e) => {
 
-    console.log(value);
+    const {name, value} = e.target
+    console.log(name , "=>",value);
     console.log(id);
   };
 
- ;
+ 
 
   return (
     <>
@@ -68,8 +69,9 @@ const TasksList = () => {
                   <div className="flex justify-evenly ">
 
                     <div className="">
-                    <select name="status" className="border"  onChange={(e)=> {handleOnChangeCheck(item._id, e.target.value)}}>
-                    <option value="">---Select---</option>
+                    <select name="status" className="border" value={tasks.status} onChange={(e)=> {handleOnChangeCheck(item._id, e)}}>
+                    <option value="">--- Select ---</option>
+                    <option value="notStarted">Not Started</option>
                     <option value="progress">In Progress</option>
                     <option value="notDoing">Not Doing</option>
                     <option value="notImportant">Not Important</option>
