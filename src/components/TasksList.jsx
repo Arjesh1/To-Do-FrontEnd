@@ -9,7 +9,7 @@ const TasksList = () => {
   const [tasks, setTask] = useState([]);
   const [selectedTask, setSelectedTask] = useState({});
   const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false);
+  
   useEffect(() => {
     try {
       axios
@@ -35,11 +35,13 @@ const TasksList = () => {
     }
   };
 
-  const handleOnChangeCheck = (e) => {
-    setIsChecked(e.target.checked);
+  const handleOnChangeCheck = (id, value) => {
+
+    console.log(value);
+    console.log(id);
   };
 
-  console.log(isChecked);
+ ;
 
   return (
     <>
@@ -57,19 +59,25 @@ const TasksList = () => {
           <tbody>
             {tasks?.map((item, i) => (
               <tr className="border-b" key={item._id}>
-                <td className="py-3">{i + 1}</td>
+                <td className="py-3">{i + 1}.</td>
                 <td className="py-3">{item.task}</td>
                 <td className="py-3">
                   {new Date(item.dueDate).toLocaleDateString()}
                 </td>
-                <td className="py-3">
-                  <div className="flex justify-center gap-4">
-                    <input
-                      type="checkbox"
-                      className="rounded-full"
-                      checked={isChecked}
-                      onChange={handleOnChangeCheck}
-                    />
+                <td className="py-3  ">
+                  <div className="flex justify-evenly ">
+
+                    <div className="">
+                    <select name="status" className="border"  onChange={(e)=> {handleOnChangeCheck(item._id, e.target.value)}}>
+                    <option value="">---Select---</option>
+                    <option value="progress">In Progress</option>
+                    <option value="notDoing">Not Doing</option>
+                    <option value="notImportant">Not Important</option>
+                    <option value="completed">Completed</option>
+                    </select>
+
+                    </div>
+                    
                     <button
                       className="text-blue-300 text-2xl"
                       onClick={() => {
