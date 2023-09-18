@@ -18,7 +18,6 @@ const Create = () => {
     const dueDateTimestamp = new Date(form.dueDate).getTime();
     form.dueDate = dueDateTimestamp;
 
-    console.log(form);
     try {
       await axios.post("http://localhost:3001/add", form);
       // toast.success("Task Added."); // Show a success toast message

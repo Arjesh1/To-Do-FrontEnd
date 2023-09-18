@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbars from './Navbars'
 import {toast} from 'react-toastify'
+import axios from 'axios'
 
 
 
@@ -14,11 +15,22 @@ const Register = () => {
 
         setRegisterForm({...registerForm, [name]: value})
     }
-    const handleOnSubmit =  (e) =>{
+    const handleOnSubmit =  async (e) =>{
         e.preventDefault()
 
          if (registerForm.password === registerForm.confirmPassword) {
-            console.log(registerForm);
+          const {confirmPassword, ...rest} = registerForm
+
+          
+          try {
+            await axios.post("http://localhost:3001/register", rest);
+            window.location.reload();
+            toast.success("User Registered."); 
+            
+          } catch (error) {
+            console.log(error);
+          }
+
         } else {
             toast.error("Password and confirm password do not match!")
         }
