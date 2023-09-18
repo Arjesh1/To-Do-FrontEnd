@@ -8,6 +8,7 @@ import { setShowEditModal } from "./taskSlice";
 const TasksList = () => {
   const [tasks, setTask] = useState([]);
   const [selectedTask, setSelectedTask] = useState({});
+  const [progressData, setProgressData] = useState({})
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -20,10 +21,11 @@ const TasksList = () => {
     }
   }, []);
 
+
   const handleOnEdit = (item) => {
     setSelectedTask(item);
     dispatch(setShowEditModal(true));
-  };
+  };    
 
   const handleOnDelete = async (id) => {
     try {
@@ -35,11 +37,21 @@ const TasksList = () => {
     }
   };
 
-  const handleOnChangeCheck = (id, e) => {
+  const handleOnChangeCheck = async (item, e) => {
 
-    const {name, value} = e.target
-    console.log(name , "=>",value);
-    console.log(id);
+    item.status = e.target.value
+
+    
+    // try {
+
+    //   await axios.post("http://localhost:3001/add", item);
+    //   // toast.success("Task Added."); // Show a success toast message
+    //   window.location.reload();
+      
+    // } catch (error) {
+    //   console.log(error);
+      
+    // }
   };
 
  
@@ -54,6 +66,7 @@ const TasksList = () => {
               <th className="py-4">S/N</th>
               <th className="py-4">Task</th>
               <th className="py-4">Due Date</th>
+              <th className="py-4">Status</th>
               <th className="py-4">Action</th>
             </tr>
           </thead>
@@ -65,20 +78,23 @@ const TasksList = () => {
                 <td className="py-3">
                   {new Date(item.dueDate).toLocaleDateString()}
                 </td>
+                <td className="py-3">
+                  {item.status === "notStarted" ? (
+                  <>
+                  Not Started
+                </>
+                ): item.status === "progress" ? (
+                <>In Progress</>
+                ) : item.status === "notImportant" ? (
+                  <>Not Important</>
+                )
+                   : (<>Completed</>)
+                
+              }</td>
                 <td className="py-3  ">
                   <div className="flex justify-evenly ">
 
-                    <div className="">
-                    <select name="status" className="border" value={tasks.status} onChange={(e)=> {handleOnChangeCheck(item._id, e)}}>
-                    <option value="">--- Select ---</option>
-                    <option value="notStarted">Not Started</option>
-                    <option value="progress">In Progress</option>
-                    <option value="notDoing">Not Doing</option>
-                    <option value="notImportant">Not Important</option>
-                    <option value="completed">Completed</option>
-                    </select>
-
-                    </div>
+                    
                     
                     <button
                       className="text-blue-300 text-2xl"

@@ -10,6 +10,8 @@ const Modal = ({ selectedTask }) => {
   const cancelButtonRef = useRef(null);
   const [selectedData, setSelectedData] = useState({});
 
+ 
+
   function timestampToDateFormat(timestamp) {
     const date = new Date(timestamp);
     const year = date.getFullYear();
@@ -21,13 +23,14 @@ const Modal = ({ selectedTask }) => {
 
   useEffect(() => {
     if (selectedTask) {
-      const { task, dueDate } = selectedTask;
+      const { task, dueDate, status } = selectedTask;
       const formattedDate = timestampToDateFormat(dueDate); // You can use your formatting function here
 
       // Now set the selectedData with the desired values
       setSelectedData({
         task: task,
         dueDate: formattedDate,
+        status: status,
       });
     }
   }, [selectedTask]);
@@ -50,6 +53,7 @@ const Modal = ({ selectedTask }) => {
       console.log(error);
     }
   };
+
 
   return (
     <>
@@ -98,22 +102,34 @@ const Modal = ({ selectedTask }) => {
                             <div className=" w-full  ">
                               <label>Task</label>
                               <input
-                                class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="text"
                                 name="task"
                                 onChange={handleOnChange}
-                                value={selectedData.task}
+                                value={selectedData?.task}
                               />
+                            </div>
+
+                            <div className=" w-full  ">
+                            <label>Status</label>
+                            <select name="status" className="block w-full rounded-md border-0 pl-5 py-1.5  text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={selectedData?.status} onChange={handleOnChange}>
+                    <option value="">--- Select ---</option>
+                    <option value="notStarted">Not Started</option>
+                    <option value="progress">In Progress</option>
+                    <option value="notImportant">Not Important</option>
+                    <option value="completed">Completed</option>
+                    </select>
+
                             </div>
 
                             <div className="mt-2">
                               <label>Due Date</label>
                               <input
-                                class="block w-full rounded-md border-0 pl-5 py-1.5  text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 pl-5 py-1.5  text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 type="date"
                                 name="dueDate"
                                 onChange={handleOnChange}
-                                value={selectedData.dueDate}
+                                value={selectedData?.dueDate}
                               />
                             </div>
                           </div>
