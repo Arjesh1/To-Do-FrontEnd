@@ -60,7 +60,7 @@ const Create = () => {
           <div className="self-end col-span-4 px-5 sm:px-2 sm: mt-2 md:col-span-1 ">
             <button
               type="submit"
-              className="rounded-lg bg-cyan-600 text-white px-2 py-1 w-full"
+              className="rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white px-2 py-1 w-full"
             >
               {" "}
               + Add task

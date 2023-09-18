@@ -15,7 +15,7 @@ const Modal = ({ selectedTask }) => {
   function timestampToDateFormat(timestamp) {
     const date = new Date(timestamp);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Add 1 to month since it's zero-based
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
     const day = String(date.getDate()).padStart(2, "0");
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
@@ -24,9 +24,7 @@ const Modal = ({ selectedTask }) => {
   useEffect(() => {
     if (selectedTask) {
       const { task, dueDate, status } = selectedTask;
-      const formattedDate = timestampToDateFormat(dueDate); // You can use your formatting function here
-
-      // Now set the selectedData with the desired values
+      const formattedDate = timestampToDateFormat(dueDate); 
       setSelectedData({
         task: task,
         dueDate: formattedDate,
