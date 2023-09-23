@@ -2,25 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import Modal from "./Modal";
-import { useDispatch } from "react-redux";
-import { setShowEditModal } from "./taskSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowEditModal, setTasks } from "./taskSlice";
+import { toast } from "react-toastify";
 
 const TasksList = () => {
-  const [tasks, setTask] = useState([]);
+  const {tasks} = useSelector(state => state.task)
   const [selectedTask, setSelectedTask] = useState({});
-  const [progressData, setProgressData] = useState({})
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    try {
-       axios
-        .get("http://localhost:3001/get")
-        .then((result) => setTask(result?.data));
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
 
   const handleOnEdit = (item) => {
     setSelectedTask(item);
@@ -28,31 +17,30 @@ const TasksList = () => {
   };    
 
   const handleOnDelete = async (id) => {
-    try {
-      dispatch(setShowEditModal(false));
-      await axios.delete(`http://localhost:3001/delete/${id}`);
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
+
+    const confirmed = window.confirm("Are you sure you want to delete this?");
+    if (confirmed) {
+      try {
+        dispatch(setShowEditModal(false));
+        await axios.delete(`http://localhost:3001/delete/${id}`); 
+        toast.success("Task deleted successfully.")
+        try {
+          axios
+           .get("http://localhost:3001/get")
+           .then((result) => dispatch(setTasks(result?.data)), 
+           );
+       } catch (error) {
+         console.log(error);
+       }
+      } catch (error) {
+        console.log(error);
+      }
+
     }
+   
   };
 
-  const handleOnChangeCheck = async (item, e) => {
-
-    item.status = e.target.value
-
-    
-    // try {
-
-    //   await axios.post("http://localhost:3001/add", item);
-    //   // toast.success("Task Added."); // Show a success toast message
-    //   window.location.reload();
-      
-    // } catch (error) {
-    //   console.log(error);
-      
-    // }
-  };
+  
 
  
 
