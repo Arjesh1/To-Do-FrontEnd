@@ -22,16 +22,23 @@ const TasksList = () => {
     if (confirmed) {
       try {
         dispatch(setShowEditModal(false));
-        await axios.delete(`http://localhost:3001/delete/${id}`); 
-        toast.success("Task deleted successfully.")
-        try {
-          axios
-           .get("http://localhost:3001/get")
-           .then((result) => dispatch(setTasks(result?.data)), 
-           );
-       } catch (error) {
-         console.log(error);
-       }
+        const response = await axios.delete(`http://localhost:3001/delete/${id}`); 
+        if (response.data === "success"){
+          toast.success("Task deleted successfully.")
+          try {
+            axios
+             .get("http://localhost:3001/get")
+             .then((result) => dispatch(setTasks(result?.data)), 
+             );
+         } catch (error) {
+           console.log(error);
+         }
+
+        } else {
+          toast.error("Something went wrong. Please try again later!")
+        }
+        
+        
       } catch (error) {
         console.log(error);
       }

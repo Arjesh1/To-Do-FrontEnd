@@ -33,26 +33,21 @@ const Create = () => {
 
     try {
        const response = await axios.post("http://localhost:3001/add", form);
-       console.log(response);
-      toast.success("Task Added."); // Show a success toast message
-      setForm((prevForm) => ({
-        ...prevForm,
-        task: "",
-        dueDate: "",
-      }));
-      console.log(form);
-      try {
-        axios
-         .get("http://localhost:3001/get")
-         .then((result) => dispatch(setTasks(result?.data)), 
-
-        
-         
-         );
-     } catch (error) {
-       console.log(error);
- 
-     }
+       if(response.data === "success"){
+        toast.success("Task Added successfully."); // Show a success toast message
+        try {
+          axios
+           .get("http://localhost:3001/get")
+           .then((result) => dispatch(setTasks(result?.data)), 
+           );
+       } catch (error) {
+         console.log(error);
+   
+       }
+       } else {
+        toast.error("Something went wrong. Please try again later!")
+       }
+     
       
     } catch (error) {
       console.log(error);

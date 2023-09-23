@@ -24,7 +24,6 @@ const Register = () => {
           
           try {
             await axios.post("http://localhost:3001/register", rest);
-            window.location.reload();
             toast.success("User Registered."); 
             
           } catch (error) {

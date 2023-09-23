@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowEditModal } from "./taskSlice.js";
+import { setShowEditModal, setTasks } from "./taskSlice.js";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Modal = ({ selectedTask }) => {
   const { showEditModal } = useSelector((state) => state.task);
@@ -45,8 +46,25 @@ const Modal = ({ selectedTask }) => {
 
     try {
       dispatch(setShowEditModal(false));
-      await axios.put("http://localhost:3001/update", selectedData);
-      window.location.reload();
+      const response = await axios.put("http://localhost:3001/update", selectedData);
+      if(response.data === "success"){
+        toast.success("Task updated successfully."); // Show a success toast message
+        try {
+          axios
+           .get("http://localhost:3001/get")
+           .then((result) => dispatch(setTasks(result?.data)), 
+           );
+       } catch (error) {
+         console.log(error);
+   
+       }
+       } else {
+        toast.error("Something went wrong. Please try again later!")
+       }
+
+
+
+      
     } catch (error) {
       console.log(error);
     }
